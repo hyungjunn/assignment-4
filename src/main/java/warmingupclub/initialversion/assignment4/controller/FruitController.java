@@ -42,25 +42,15 @@ public class FruitController {
         jdbcTemplate.update(sql, request.getId());
     }
 
+
+
     @GetMapping("/fruit/stat")
     public FruitReadSalesAmountRespond readSalesFruitAmount(@RequestParam String name) {
+        String salesAmountSql = "SELECT SUM(price) FROM fruit WHERE name = ? GROUP BY is_sold";
+        List<Long> salesAmounts = jdbcTemplate.query(salesAmountSql, (rs, rowNum) -> rs.getLong(1), name);
 
-        long salesAmount = 0;
-        long notSalesAmount = 0;
-
-        String salesAmountSql = "SELECT * FROM fruit WHERE name = ? AND is_sold = 1";
-        List<Long> salesPrices = jdbcTemplate.query(salesAmountSql, (rs, rowNum) -> rs.getLong("price"), name);
-
-        String notSalesAmountSql = "SELECT * FROM fruit WHERE name = ? AND is_sold = 0";
-        List<Long> notSalesPrices = jdbcTemplate.query(notSalesAmountSql, (rs, rowNum) -> rs.getLong("price"), name);
-
-        for (Long salesPrice : salesPrices) {
-            salesAmount += salesPrice;
-        }
-
-        for (Long notSalesPrice : notSalesPrices) {
-            notSalesAmount += notSalesPrice;
-        }
+        Long salesAmount = salesAmounts.get(0);
+        Long notSalesAmount = salesAmounts.get(1);
 
         return new FruitReadSalesAmountRespond(salesAmount, notSalesAmount);
     }
