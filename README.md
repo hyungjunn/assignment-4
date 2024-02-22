@@ -6,7 +6,7 @@ API 들을 만들어 보며 API 개발에 익숙해져 보기
 - HTTP method : `POST`
 - HTTP path : `/api/v1/fruit`
 - HTTP 요청 body
-```json
+```
 {
   "name": String, 
   "warehousingDate": LocalDate,
