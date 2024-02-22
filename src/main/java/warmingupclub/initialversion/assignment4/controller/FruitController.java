@@ -12,6 +12,7 @@ import warmingupclub.initialversion.assignment4.dto.request.FruitCreateRequest;
 import warmingupclub.initialversion.assignment4.dto.request.FruitUpdateRequest;
 import warmingupclub.initialversion.assignment4.dto.respond.FruitReadSalesAmountRespond;
 
+import java.util.HashSet;
 import java.util.List;
 
 @RequestMapping("/api/v1")
@@ -41,25 +42,26 @@ public class FruitController {
         jdbcTemplate.update(sql, request.getId());
     }
 
-
-    private long salesAmount;
-    private long notSalesAmount;
     @GetMapping("/fruit/stat")
     public FruitReadSalesAmountRespond readSalesFruitAmount(@RequestParam String name) {
-        String sql = "SELECT * FROM fruit WHERE name = ?";
-        List<FruitReadSalesAmountRespond> query = jdbcTemplate.query(sql, (rs, rowNum) -> {
-            long price = rs.getLong("price");
-            boolean isSold = rs.getBoolean("is_sold");
-            if (isSold) {
-                salesAmount += price;
-            }
 
-            if (!isSold) {
-                notSalesAmount += price;
-            }
+        long salesAmount = 0;
+        long notSalesAmount = 0;
 
-            return new FruitReadSalesAmountRespond(salesAmount, notSalesAmount);
-        }, name);
-        return new FruitReadSalesAmountRespond(query.get(query.size() - 1).getSalesAmount(), query.get(query.size() - 1).getNotSalesAmount());
+        String salesAmountSql = "SELECT * FROM fruit WHERE name = ? AND is_sold = 1";
+        List<Long> salesPrices = jdbcTemplate.query(salesAmountSql, (rs, rowNum) -> rs.getLong("price"), name);
+
+        String notSalesAmountSql = "SELECT * FROM fruit WHERE name = ? AND is_sold = 0";
+        List<Long> notSalesPrices = jdbcTemplate.query(notSalesAmountSql, (rs, rowNum) -> rs.getLong("price"), name);
+
+        for (Long salesPrice : salesPrices) {
+            salesAmount += salesPrice;
+        }
+
+        for (Long notSalesPrice : notSalesPrices) {
+            notSalesAmount += notSalesPrice;
+        }
+
+        return new FruitReadSalesAmountRespond(salesAmount, notSalesAmount);
     }
 }
