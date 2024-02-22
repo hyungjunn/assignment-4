@@ -42,8 +42,6 @@ public class FruitController {
         jdbcTemplate.update(sql, request.getId());
     }
 
-
-
     @GetMapping("/fruit/stat")
     public FruitReadSalesAmountRespond readSalesFruitAmount(@RequestParam String name) {
         String salesAmountSql = "SELECT SUM(price) FROM fruit WHERE name = ? GROUP BY is_sold";

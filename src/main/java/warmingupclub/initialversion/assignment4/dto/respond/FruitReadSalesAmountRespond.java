@@ -2,8 +2,8 @@ package warmingupclub.initialversion.assignment4.dto.respond;
 
 public class FruitReadSalesAmountRespond {
 
-    private long salesAmount;
-    private long notSalesAmount;
+    private final long salesAmount;
+    private final long notSalesAmount;
 
     public FruitReadSalesAmountRespond(long salesAmount, long notSalesAmount) {
         this.salesAmount = salesAmount;
