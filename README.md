@@ -14,3 +14,15 @@ API 들을 만들어 보며 API 개발에 익숙해져 보기
 }
 ```
 - 응답 : 성공시 HTTP status code 200
+
+### 문제 2
+과일이 팔리게 되면, 우리 시스템에 팔린 과일 정보를 기록해야 합니다. 스펙은 다음과 같습니다.
+- HTTP method : `PUT`
+- HTTP path : `/api/v1/fruit`
+- HTTP 요청 Body
+```
+{
+  "id" : long
+}
+```
+- 응답 : 성공시 200
