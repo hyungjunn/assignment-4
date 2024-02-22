@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RestController;
 import warmingupclub.initialversion.assignment4.dto.request.FruitCreateRequest;
 import warmingupclub.initialversion.assignment4.dto.request.FruitUpdateRequest;
 
+import java.util.List;
+
 @RequestMapping("/api/v1")
 @RestController
 public class FruitController {
@@ -26,8 +28,13 @@ public class FruitController {
     }
 
     @PutMapping("/fruit")
-    public void updateFruitInformation(@RequestBody FruitUpdateRequest request) {
-        String sql = "UPDATE fruit SET is_sold = ? WHERE id = ?";
-        jdbcTemplate.update(sql, request.isSold(), request.getId());
+    public void updateSoldFruitInformation(@RequestBody FruitUpdateRequest request) {
+        String readSql = "SELECT * FROM fruit WHERE id = ?";
+        boolean isEmpty = jdbcTemplate.query(readSql, (rs, rowNum) -> 0, request.getId()).isEmpty();
+        if (isEmpty) {
+            throw new IllegalArgumentException();
+        }
+        String sql = "UPDATE fruit SET is_sold = 1 WHERE id = ?";
+        jdbcTemplate.update(sql, request.getId());
     }
 }
