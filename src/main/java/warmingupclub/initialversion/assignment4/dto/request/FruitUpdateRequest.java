@@ -4,6 +4,11 @@ public class FruitUpdateRequest {
     long id;
     boolean isSold;
 
+    public FruitUpdateRequest(long id, boolean isSold) {
+        this.id = id;
+        this.isSold = isSold;
+    }
+
     public long getId() {
         return id;
     }
