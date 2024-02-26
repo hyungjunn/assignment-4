@@ -1,6 +1,5 @@
 package warmingupclub.initialversion.assignment4.service;
 
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import warmingupclub.initialversion.assignment4.dto.request.FruitCreateRequest;
 import warmingupclub.initialversion.assignment4.dto.respond.FruitReadSalesAmountRespond;
