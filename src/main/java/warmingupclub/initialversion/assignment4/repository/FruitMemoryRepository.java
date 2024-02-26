@@ -23,19 +23,17 @@ public class FruitMemoryRepository implements FruitRepository {
 
     @Override
     public FruitReadSalesAmountRespond getSalesFruitAmount(String name) {
-        long salesAmout = 0L;
-        long notSalesAmout = 0L;
-        for (Fruit fruit : fruits) {
-            if (fruit.getName().equals(name)) {
-                if (fruit.is_sold()) {
-                    salesAmout += fruit.getPrice();
-                } else {
-                    notSalesAmout += fruit.getPrice();
-                }
-            }
-        }
+        long salesAmount = fruits.stream()
+                .filter(fruit -> fruit.getName().equals(name) && fruit.is_sold())
+                .mapToLong(Fruit::getPrice)
+                .sum();
 
-        return new FruitReadSalesAmountRespond(salesAmout, notSalesAmout);
+        long notSalesAmount = fruits.stream()
+                .filter(fruit -> fruit.getName().equals(name) && !fruit.is_sold())
+                .mapToLong(Fruit::getPrice)
+                .sum();
+
+        return new FruitReadSalesAmountRespond(salesAmount, notSalesAmount);
     }
 
     @Override
