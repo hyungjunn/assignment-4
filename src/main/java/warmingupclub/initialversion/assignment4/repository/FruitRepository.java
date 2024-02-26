@@ -8,12 +8,18 @@ import java.util.List;
 
 public class FruitRepository {
 
-    public void saveFruit(JdbcTemplate jdbcTemplate, FruitCreateRequest request) {
+    private final JdbcTemplate jdbcTemplate;
+
+    public FruitRepository(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
+    public void saveFruit(FruitCreateRequest request) {
         String sql = "INSERT INTO fruit(name, warehousing_date, price) VALUES (?, ?, ?)";
         jdbcTemplate.update(sql, request.getName(), request.getDate(), request.getPrice());
     }
 
-    public FruitReadSalesAmountRespond getSalesFruitAmount(JdbcTemplate jdbcTemplate, String name) {
+    public FruitReadSalesAmountRespond getSalesFruitAmount(String name) {
         String salesAmountSql = "SELECT SUM(price) FROM fruit WHERE name = ? GROUP BY is_sold";
         List<Long> salesAmounts = jdbcTemplate.query(salesAmountSql, (rs, rowNum) -> rs.getLong(1), name);
 
@@ -23,12 +29,12 @@ public class FruitRepository {
         return new FruitReadSalesAmountRespond(salesAmount, notSalesAmount);
     }
 
-    public boolean isNotExistFruit(JdbcTemplate jdbcTemplate, long id) {
+    public boolean isNotExistFruit(long id) {
         String readSql = "SELECT * FROM fruit WHERE id = ?";
         return jdbcTemplate.query(readSql, (rs, rowNum) -> 0, id).isEmpty();
     }
 
-    public void updateFruit(JdbcTemplate jdbcTemplate, long id) {
+    public void updateFruit(long id) {
         String sql = "UPDATE fruit SET is_sold = 1 WHERE id = ?";
         jdbcTemplate.update(sql, id);
     }

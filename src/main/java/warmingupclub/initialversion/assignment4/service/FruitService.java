@@ -7,22 +7,26 @@ import warmingupclub.initialversion.assignment4.repository.FruitRepository;
 
 public class FruitService {
 
-    private final FruitRepository fruitRepository = new FruitRepository();
+    private final FruitRepository fruitRepository;
 
-    public void saveFruit(JdbcTemplate jdbcTemplate, FruitCreateRequest request) {
-        fruitRepository.saveFruit(jdbcTemplate, request);
+    public FruitService(JdbcTemplate jdbcTemplate) {
+        this.fruitRepository = new FruitRepository(jdbcTemplate);
     }
 
-    public FruitReadSalesAmountRespond readSalesFruitAmount(JdbcTemplate jdbcTemplate, String name) {
-        return fruitRepository.getSalesFruitAmount(jdbcTemplate, name);
+    public void saveFruit(FruitCreateRequest request) {
+        fruitRepository.saveFruit(request);
     }
 
-    public void updateSoldFruitInformation(JdbcTemplate jdbcTemplate, long id) {
-        if (fruitRepository.isNotExistFruit(jdbcTemplate, id)) {
+    public FruitReadSalesAmountRespond readSalesFruitAmount(String name) {
+        return fruitRepository.getSalesFruitAmount(name);
+    }
+
+    public void updateSoldFruitInformation(long id) {
+        if (fruitRepository.isNotExistFruit(id)) {
             throw new IllegalArgumentException();
         }
 
-        fruitRepository.updateFruit(jdbcTemplate, id);
+        fruitRepository.updateFruit(id);
     }
 
 }

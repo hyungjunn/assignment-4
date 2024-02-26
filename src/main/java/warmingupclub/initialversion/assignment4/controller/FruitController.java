@@ -17,27 +17,25 @@ import warmingupclub.initialversion.assignment4.service.FruitService;
 @RestController
 public class FruitController {
 
-    private final FruitService fruitService = new FruitService();
-
-    private final JdbcTemplate jdbcTemplate;
+    private final FruitService fruitService;
 
     public FruitController(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
+        this.fruitService = new FruitService(jdbcTemplate);
     }
 
     @PostMapping("/fruit")
     public void saveFruit(@RequestBody FruitCreateRequest request) {
-        fruitService.saveFruit(jdbcTemplate, request);
+        fruitService.saveFruit(request);
     }
 
     @GetMapping("/fruit/stat")
     public FruitReadSalesAmountRespond readSalesFruitAmount(@RequestParam String name) {
-        return fruitService.readSalesFruitAmount(jdbcTemplate, name);
+        return fruitService.readSalesFruitAmount(name);
     }
 
     @PutMapping("/fruit")
     public void updateSoldFruitInformation(@RequestBody FruitUpdateRequest request) {
-        fruitService.updateSoldFruitInformation(jdbcTemplate, request.getId());
+        fruitService.updateSoldFruitInformation(request.getId());
     }
 
 }
