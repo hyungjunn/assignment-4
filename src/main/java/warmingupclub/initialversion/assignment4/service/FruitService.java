@@ -1,16 +1,18 @@
 package warmingupclub.initialversion.assignment4.service;
 
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Service;
 import warmingupclub.initialversion.assignment4.dto.request.FruitCreateRequest;
 import warmingupclub.initialversion.assignment4.dto.respond.FruitReadSalesAmountRespond;
 import warmingupclub.initialversion.assignment4.repository.FruitRepository;
 
+@Service
 public class FruitService {
 
     private final FruitRepository fruitRepository;
 
-    public FruitService(JdbcTemplate jdbcTemplate) {
-        this.fruitRepository = new FruitRepository(jdbcTemplate);
+    public FruitService(FruitRepository fruitRepository) {
+        this.fruitRepository = fruitRepository;
     }
 
     public void saveFruit(FruitCreateRequest request) {

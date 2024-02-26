@@ -19,8 +19,8 @@ public class FruitController {
 
     private final FruitService fruitService;
 
-    public FruitController(JdbcTemplate jdbcTemplate) {
-        this.fruitService = new FruitService(jdbcTemplate);
+    public FruitController(FruitService fruitService) {
+        this.fruitService = fruitService;
     }
 
     @PostMapping("/fruit")
