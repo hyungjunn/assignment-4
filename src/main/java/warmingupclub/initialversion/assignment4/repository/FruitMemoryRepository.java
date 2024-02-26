@@ -38,13 +38,7 @@ public class FruitMemoryRepository implements FruitRepository {
 
     @Override
     public boolean isNotExistFruit(long id) {
-        for (Fruit fruit : fruits) {
-            if (fruit.getId() == id) {
-                return false;
-            }
-        }
-
-        return true;
+        return fruits.stream().noneMatch(fruit -> fruit.getId() == id);
     }
 
     @Override
