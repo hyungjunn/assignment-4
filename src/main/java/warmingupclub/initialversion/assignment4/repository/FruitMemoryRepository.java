@@ -43,11 +43,8 @@ public class FruitMemoryRepository implements FruitRepository {
 
     @Override
     public void updateFruit(long id) {
-        // id - 1을 인덱스로 하고 request한 객체의 is_sold를 true로 바꾼다
-        for (int i = 0; i < fruits.size(); i++) {
-            if (fruits.get(i).getId() == id) {
-                fruits.get(i).is_sold = true;
-            }
-        }
+        fruits.stream()
+                .filter(fruit -> fruit.getId() == id)
+                .forEach(fruit -> fruit.is_sold = true);
     }
 }
