@@ -1,10 +1,10 @@
 package warmingupclub.initialversion.assignment4.dto.request;
 
 public class FruitUpdateRequest {
-    long id;
-    boolean isSold;
+    Long id;
+    Boolean isSold;
 
-    public FruitUpdateRequest(long id, boolean isSold) {
+    public FruitUpdateRequest(Long id, Boolean isSold) {
         this.id = id;
         this.isSold = isSold;
     }

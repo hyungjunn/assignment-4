@@ -1,6 +1,5 @@
 package warmingupclub.initialversion.assignment4.repository;
 
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 import warmingupclub.initialversion.assignment4.domain.Fruit;
 import warmingupclub.initialversion.assignment4.dto.request.FruitCreateRequest;
@@ -9,7 +8,7 @@ import warmingupclub.initialversion.assignment4.dto.respond.FruitReadSalesAmount
 import java.util.ArrayList;
 import java.util.List;
 
-@Primary
+//@Primary
 @Repository
 public class FruitMemoryRepository implements FruitRepository {
 
@@ -29,28 +28,29 @@ public class FruitMemoryRepository implements FruitRepository {
     }
 
     @Override
-    public boolean isNotExistFruit(long id) {
-        return fruits.stream().noneMatch(fruit -> fruit.getId() == id);
+    public boolean isNotExistFruit(Long id) {
+        return fruits.stream().noneMatch(fruit -> fruit.getId().equals(id));
     }
 
     @Override
-    public void updateFruit(long id) {
+    public void updateFruit(Long d) {
         fruits.stream()
-                .filter(fruit -> fruit.getId() == id)
-                .forEach(fruit -> fruit.is_sold = true);
+                .filter(fruit -> fruit.getId().equals(id))
+                .forEach(fruit -> fruit.isSold = true);
     }
 
     private long calculateSalesAmount(String name) {
         return fruits.stream()
-                .filter(fruit -> fruit.getName().equals(name) && fruit.is_sold())
+                .filter(fruit -> fruit.getName().equals(name) && fruit.isSold())
                 .mapToLong(Fruit::getPrice)
                 .sum();
     }
 
     private long calculateNotSalesAmount(String name) {
         return fruits.stream()
-                .filter(fruit -> fruit.getName().equals(name) && !fruit.is_sold())
+                .filter(fruit -> fruit.getName().equals(name) && !fruit.isSold())
                 .mapToLong(Fruit::getPrice)
                 .sum();
     }
+
 }

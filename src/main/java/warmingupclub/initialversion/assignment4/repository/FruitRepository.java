@@ -11,7 +11,8 @@ public interface FruitRepository {
 
     FruitReadSalesAmountRespond getSalesFruitAmount(String name);
 
-    boolean isNotExistFruit(long id);
+    boolean isNotExistFruit(Long id);
 
-    void updateFruit(long id);
+    void updateFruit(Long id);
+
 }

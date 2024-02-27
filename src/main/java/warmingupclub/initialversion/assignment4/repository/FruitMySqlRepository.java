@@ -8,6 +8,7 @@ import warmingupclub.initialversion.assignment4.dto.respond.FruitReadSalesAmount
 
 import java.util.List;
 
+@Primary
 @Repository
 public class FruitMySqlRepository implements FruitRepository {
 
@@ -35,14 +36,15 @@ public class FruitMySqlRepository implements FruitRepository {
     }
 
     @Override
-    public boolean isNotExistFruit(long id) {
+    public boolean isNotExistFruit(Long id) {
         String readSql = "SELECT * FROM fruit WHERE id = ?";
         return jdbcTemplate.query(readSql, (rs, rowNum) -> 0, id).isEmpty();
     }
 
     @Override
-    public void updateFruit(long id) {
+    public void updateFruit(Long id) {
         String sql = "UPDATE fruit SET is_sold = 1 WHERE id = ?";
         jdbcTemplate.update(sql, id);
     }
+
 }

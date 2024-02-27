@@ -6,11 +6,11 @@ import warmingupclub.initialversion.assignment4.dto.respond.FruitReadSalesAmount
 import warmingupclub.initialversion.assignment4.repository.FruitRepository;
 
 @Service
-public class FruitService {
+public class FruitServiceV1 {
 
     private final FruitRepository fruitRepository;
 
-    public FruitService(FruitRepository fruitRepository) {
+    public FruitServiceV1(FruitRepository fruitRepository) {
         this.fruitRepository = fruitRepository;
     }
 
@@ -22,7 +22,7 @@ public class FruitService {
         return fruitRepository.getSalesFruitAmount(name);
     }
 
-    public void updateSoldFruitInformation(long id) {
+    public void updateSoldFruitInformation(Long id) {
         if (fruitRepository.isNotExistFruit(id)) {
             throw new IllegalArgumentException();
         }
