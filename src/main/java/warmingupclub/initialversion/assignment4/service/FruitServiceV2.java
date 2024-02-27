@@ -37,4 +37,12 @@ public class FruitServiceV2 {
                 .sum();
     }
 
+    public void updateSoldFruitInformation(Long id) {
+        Fruit fruit = fruitRepository.findById(id)
+                .orElseThrow(IllegalAccessError::new);
+
+        fruit.updateSoldInformation();
+        fruitRepository.save(fruit);
+    }
+
 }
