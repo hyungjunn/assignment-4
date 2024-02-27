@@ -21,4 +21,20 @@ public class FruitServiceV2 {
         fruitRepository.save(new Fruit(request.getName(), request.getDate(), request.getPrice()));
     }
 
+    public FruitReadSalesAmountRespond getSalesFruitAmount(String name) {
+        List<Fruit> fruits = fruitRepository.findByName(name);
+
+        Long salesAmount = fruits.stream()
+                .filter(Fruit::isSold)
+                .mapToLong(Fruit::getPrice)
+                .sum();
+
+        Long notSalesAmount = fruits.stream()
+                .filter(fruit -> !fruit.isSold())
+                .mapToLong(Fruit::getPrice)
+                .sum();
+
+        return new FruitReadSalesAmountRespond(salesAmount, notSalesAmount);
+    }
+
 }
