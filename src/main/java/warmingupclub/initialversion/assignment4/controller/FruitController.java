@@ -37,4 +37,9 @@ public class FruitController {
         fruitServiceV2.updateSoldFruitInformation(request.getId());
     }
 
+    @GetMapping("/fruit/count")
+    public Long getSoldFruitCount(String name) {
+        return fruitServiceV2.getSoldFruitCount(name);
+    }
+
 }

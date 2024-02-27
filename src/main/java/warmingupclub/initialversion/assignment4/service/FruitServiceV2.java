@@ -45,4 +45,12 @@ public class FruitServiceV2 {
         fruitRepository.save(fruit);
     }
 
+    public Long getSoldFruitCount(String name) {
+        // name(요청한)과 repo에 있는 name이 일치하는 애들중에
+        // 팔린(isSold가 true인) 것들의 갯수를 반환
+        return fruitRepository.findByName(name).stream()
+                .filter(fruit -> fruit.isSold == true)
+                .count();
+    }
+
 }
