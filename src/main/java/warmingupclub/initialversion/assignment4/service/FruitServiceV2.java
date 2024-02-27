@@ -24,17 +24,17 @@ public class FruitServiceV2 {
     public FruitReadSalesAmountRespond getSalesFruitAmount(String name) {
         List<Fruit> fruits = fruitRepository.findByName(name);
 
-        Long salesAmount = fruits.stream()
-                .filter(Fruit::isSold)
-                .mapToLong(Fruit::getPrice)
-                .sum();
-
-        Long notSalesAmount = fruits.stream()
-                .filter(fruit -> !fruit.isSold())
-                .mapToLong(Fruit::getPrice)
-                .sum();
+        Long salesAmount = calculateAmount(fruits, true);
+        Long notSalesAmount = calculateAmount(fruits, false);
 
         return new FruitReadSalesAmountRespond(salesAmount, notSalesAmount);
+    }
+
+    private Long calculateAmount(List<Fruit> fruits, boolean isSold) {
+        return fruits.stream()
+                .filter(fruit -> fruit.isSold() == isSold)
+                .mapToLong(Fruit::getPrice)
+                .sum();
     }
 
 }
