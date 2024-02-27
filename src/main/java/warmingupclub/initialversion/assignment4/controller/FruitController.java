@@ -1,6 +1,5 @@
 package warmingupclub.initialversion.assignment4.controller;
 
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -11,31 +10,31 @@ import org.springframework.web.bind.annotation.RestController;
 import warmingupclub.initialversion.assignment4.dto.request.FruitCreateRequest;
 import warmingupclub.initialversion.assignment4.dto.request.FruitUpdateRequest;
 import warmingupclub.initialversion.assignment4.dto.respond.FruitReadSalesAmountRespond;
-import warmingupclub.initialversion.assignment4.service.FruitService;
+import warmingupclub.initialversion.assignment4.service.FruitServiceV2;
 
 @RequestMapping("/api/v1")
 @RestController
 public class FruitController {
 
-    private final FruitService fruitService;
+    private final FruitServiceV2 fruitServiceV2;
 
-    public FruitController(FruitService fruitService) {
-        this.fruitService = fruitService;
+    public FruitController(FruitServiceV2 fruitServiceV2) {
+        this.fruitServiceV2 = fruitServiceV2;
     }
 
     @PostMapping("/fruit")
     public void saveFruit(@RequestBody FruitCreateRequest request) {
-        fruitService.saveFruit(request);
+        fruitServiceV2.saveFruit(request);
     }
 
     @GetMapping("/fruit/stat")
     public FruitReadSalesAmountRespond readSalesFruitAmount(@RequestParam String name) {
-        return fruitService.readSalesFruitAmount(name);
+        return fruitServiceV2.getSalesFruitAmount(name);
     }
 
     @PutMapping("/fruit")
     public void updateSoldFruitInformation(@RequestBody FruitUpdateRequest request) {
-        fruitService.updateSoldFruitInformation(request.getId());
+        fruitServiceV2.updateSoldFruitInformation(request.getId());
     }
 
 }
