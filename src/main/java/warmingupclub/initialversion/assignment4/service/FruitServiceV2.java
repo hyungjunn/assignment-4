@@ -8,6 +8,7 @@ import warmingupclub.initialversion.assignment4.dto.respond.FruitSoldCountRespon
 import warmingupclub.initialversion.assignment4.dto.respond.FruitsSpecificOptionPriceRespond;
 import warmingupclub.initialversion.assignment4.repository.FruitJpaRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -58,28 +59,39 @@ public class FruitServiceV2 {
     }
 
     public List<FruitsSpecificOptionPriceRespond> getSpecificOptionPriceFruits(String option, Long price) {
-        // GTE select * from fruit where price >= ? and is_sold = false
-        // LTE select * from fruit where price <= ? and is_sold = false
-
         if (isNotSpecificPriceOption(option)) {
             throw new IllegalArgumentException();
         }
 
-        if ("GTE".equals(option)) {
-            return fruitRepository.findByPriceGreaterThanEqualAndIsSold(price, false)
-                    .stream()
-                    .map(FruitsSpecificOptionPriceRespond::new)
-                    .collect(Collectors.toList());
-        } else {
-            return fruitRepository.findByPriceGreaterThanEqualAndIsSold(price, false)
-                    .stream()
-                    .map(FruitsSpecificOptionPriceRespond::new)
-                    .collect(Collectors.toList());
+        List<Fruit> fruits = new ArrayList<>();
+
+        if (isGTE(option)) {
+            fruits =  fruitRepository.findByPriceGreaterThanEqualAndIsSold(price, false);
         }
+
+        if (isLTE(option)) {
+            fruits =  fruitRepository.findByPriceLessThanEqualAndIsSold(price, false);
+        }
+
+        return convertToFruitsSpecificOptionPriceRespond(fruits);
+    }
+
+    private List<FruitsSpecificOptionPriceRespond> convertToFruitsSpecificOptionPriceRespond(List<Fruit> fruits) {
+        return fruits.stream()
+                .map(FruitsSpecificOptionPriceRespond::new)
+                .collect(Collectors.toList());
     }
 
     private boolean isNotSpecificPriceOption(String option) {
         return !("GTE".equals(option) || "LTE".equals(option));
+    }
+
+    private boolean isGTE(String option) {
+        return "GTE".equals(option);
+    }
+
+    private boolean isLTE(String option) {
+        return "LTE".equals(option);
     }
 
 }
