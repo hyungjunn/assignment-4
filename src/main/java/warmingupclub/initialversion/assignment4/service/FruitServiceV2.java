@@ -61,7 +61,7 @@ public class FruitServiceV2 {
         // GTE select * from fruit where price >= ? and is_sold = false
         // LTE select * from fruit where price <= ? and is_sold = false
 
-        if (!("GTE".equals(option) || "LTE".equals(option))) {
+        if (isNotSpecificPriceOption(option)) {
             throw new IllegalArgumentException();
         }
 
@@ -76,6 +76,10 @@ public class FruitServiceV2 {
                     .map(FruitsSpecificOptionPriceRespond::new)
                     .collect(Collectors.toList());
         }
+    }
+
+    private boolean isNotSpecificPriceOption(String option) {
+        return !("GTE".equals(option) || "LTE".equals(option));
     }
 
 }
