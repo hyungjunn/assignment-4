@@ -9,4 +9,7 @@ public interface FruitJpaRepository extends JpaRepository<Fruit, Long> {
 
     List<Fruit> findByName(String name);
 
+    List<Fruit> findByPriceGreaterThanEqualAndIsSold(Long price, Boolean isSold);
+    List<Fruit> findByPriceLessThanEqualAndIsSold(Long price, Boolean isSold);
+
 }
