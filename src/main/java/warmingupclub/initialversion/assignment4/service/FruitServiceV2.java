@@ -4,9 +4,12 @@ import org.springframework.stereotype.Service;
 import warmingupclub.initialversion.assignment4.domain.Fruit;
 import warmingupclub.initialversion.assignment4.dto.request.FruitCreateRequest;
 import warmingupclub.initialversion.assignment4.dto.respond.FruitReadSalesAmountRespond;
+import warmingupclub.initialversion.assignment4.dto.respond.FruitSoldCountRespond;
+import warmingupclub.initialversion.assignment4.dto.respond.FruitsSpecificOptionPriceRespond;
 import warmingupclub.initialversion.assignment4.repository.FruitJpaRepository;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class FruitServiceV2 {
@@ -45,12 +48,34 @@ public class FruitServiceV2 {
         fruitRepository.save(fruit);
     }
 
-    public Long getSoldFruitCount(String name) {
+    public FruitSoldCountRespond getSoldFruitCount(String name) {
         // name(요청한)과 repo에 있는 name이 일치하는 애들중에
         // 팔린(isSold가 true인) 것들의 갯수를 반환
-        return fruitRepository.findByName(name).stream()
+        Long count = fruitRepository.findByName(name).stream()
                 .filter(fruit -> fruit.isSold == true)
                 .count();
+        return new FruitSoldCountRespond(count);
+    }
+
+    public List<FruitsSpecificOptionPriceRespond> getSpecificOptionPriceFruits(String option, Long price) {
+        // GTE select * from fruit where price >= ? and is_sold = false
+        // LTE select * from fruit where price <= ? and is_sold = false
+
+        if (!("GTE".equals(option) || "LTE".equals(option))) {
+            throw new IllegalArgumentException();
+        }
+
+        if ("GTE".equals(option)) {
+            return fruitRepository.findByPriceGreaterThanEqualAndIsSold(price, false)
+                    .stream()
+                    .map(FruitsSpecificOptionPriceRespond::new)
+                    .collect(Collectors.toList());
+        } else {
+            return fruitRepository.findByPriceGreaterThanEqualAndIsSold(price, false)
+                    .stream()
+                    .map(FruitsSpecificOptionPriceRespond::new)
+                    .collect(Collectors.toList());
+        }
     }
 
 }

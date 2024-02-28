@@ -10,7 +10,11 @@ import org.springframework.web.bind.annotation.RestController;
 import warmingupclub.initialversion.assignment4.dto.request.FruitCreateRequest;
 import warmingupclub.initialversion.assignment4.dto.request.FruitUpdateRequest;
 import warmingupclub.initialversion.assignment4.dto.respond.FruitReadSalesAmountRespond;
+import warmingupclub.initialversion.assignment4.dto.respond.FruitSoldCountRespond;
+import warmingupclub.initialversion.assignment4.dto.respond.FruitsSpecificOptionPriceRespond;
 import warmingupclub.initialversion.assignment4.service.FruitServiceV2;
+
+import java.util.List;
 
 @RequestMapping("/api/v1")
 @RestController
@@ -38,8 +42,48 @@ public class FruitController {
     }
 
     @GetMapping("/fruit/count")
-    public Long getSoldFruitCount(String name) {
+    public FruitSoldCountRespond getSoldFruitCount(String name) {
         return fruitServiceV2.getSoldFruitCount(name);
     }
 
+    @GetMapping("/fruit/list")
+    public List<FruitsSpecificOptionPriceRespond> getSpecificOptionPriceFruits(@RequestParam String option, @RequestParam Long price) {
+        // name, price, warehousingDate
+        return fruitServiceV2.getSpecificOptionPriceFruits(option, price);
+    }
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
