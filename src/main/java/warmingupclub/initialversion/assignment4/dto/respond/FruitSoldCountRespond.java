@@ -8,7 +8,8 @@ public class FruitSoldCountRespond {
         this.count = count;
     }
 
-//    public Long getCount() {
-//        return count;
-//    }
+    public Long getCount() {
+        return count;
+    }
+
 }
